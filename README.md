@@ -47,4 +47,4 @@ The project was divided in three steps:
 
 3. Go to http://0.0.0.0:3001/
 
-![](screenshot.png)
+![](screenshot.PNG)
