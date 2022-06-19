@@ -43,14 +43,25 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
+    # category data for plotting
+    categories =  df[df.columns[4:]]
+    cate_counts = (categories.mean()*categories.shape[0]).sort_values(ascending=False)
+    cate_names = list(cate_counts.index)
+    
+    # Distribution of Message in news genre
+    df_direct = df[df['genre'] == 'news']
+    categories_direct =  df_direct[df_direct.columns[4:]]
+    cate_counts_direct = (categories_direct.mean()*categories_direct.shape[0]).sort_values(ascending=False)
+    cate_names_direct = list(cate_counts_direct.index)
+    
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
             'data': [
                 Bar(
-                    x=genre_names,
-                    y=genre_counts
+                    x = genre_names,
+                    y = genre_counts
                 )
             ],
 
@@ -61,6 +72,45 @@ def index():
                 },
                 'xaxis': {
                     'title': "Genre"
+                }
+            }
+        },
+        # category plotting
+        {
+            'data': [
+                Bar(
+                    x=cate_names,
+                    y=cate_counts
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of Message Categories',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': ""
+                }
+            }
+            
+        },
+        # categories in news genre
+        {
+            'data': [
+                Bar(
+                    x=cate_names_direct,
+                    y=cate_counts_direct
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of Message in the News Genre ',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': ""
                 }
             }
         }
