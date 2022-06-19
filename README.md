@@ -1,6 +1,6 @@
 # Disaster Response Pipeline Project
 
-## Descriptions:
+### Descriptions:
 
 The current project is an assignment of the Udacity nanodegree program. The aim is to analyze disaster messages from Figure Eight and build a model that classifies these messages. The model building preparation files are saved in the "temp" folder.
 The project was divided in three steps:
@@ -9,7 +9,7 @@ The project was divided in three steps:
 - Run a web app with flask
 
 
-## File Description
+### File Description
 ```
 .
 ├── app     
