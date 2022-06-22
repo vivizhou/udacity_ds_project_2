@@ -1,3 +1,9 @@
+import nltk
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('omw-1.4')
+
 import sys
 import re
 import pandas as pd
@@ -21,7 +27,7 @@ def load_data(database_filepath):
     engine = create_engine(path)
     df = pd.read_sql("disaster_messages", engine)
     X = df['message']
-    Y = df.iloc[,4:]
+    Y = df.iloc[:,4:]
     category_names = Y.columns
     return X, Y, category_names
 
