@@ -23,6 +23,18 @@ from sklearn.base import BaseEstimator, TransformerMixin
 import pickle
 
 def load_data(database_filepath):
+    '''
+    load_data
+    Load data from sql file and split the data into feature matrix and target value matrix
+    
+    Input:
+    database_filepath filepath to database
+    
+    Returns:
+    X feature matrix
+    Y target value matrix
+    category_names category names in target value matrix
+    '''
     path = 'sqlite:///' + database_filepath
     engine = create_engine(path)
     df = pd.read_sql("disaster_messages", engine)
@@ -32,6 +44,17 @@ def load_data(database_filepath):
     return X, Y, category_names
 
 def tokenize(text):
+    '''
+    tokenize
+    Tokenize the text 
+    
+    Input:
+    text Text message to be tokenized
+    
+    Returns:
+    clean_tokens A list of cleaned tokens extracted from the text
+    
+    '''
     # Replace all urls with a urlplaceholder string
     url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     
@@ -56,6 +79,12 @@ def tokenize(text):
 
 
 def build_model():
+    '''
+    build_model
+    Build pipeline function
+    
+    Returns: A Scikit ML Pipeline that processes text messages and apply classifiers of optimal parameters
+    '''
     pipeline = Pipeline([
     ('vect', TfidfVectorizer(tokenizer=tokenize)),
     ('clf', MultiOutputClassifier(RandomForestClassifier()))
@@ -71,6 +100,16 @@ def build_model():
     return cv
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    '''
+    evaluate_model
+    Print out parameters for model evaluation
+    
+    Input:
+    model The trained model to be tested on test dataset
+    X_test feature matrix to be tested
+    Y_test target value matrix to be tested
+    category_names categorie names in the target value matrix
+    '''
     Y_pred = model.predict(X_test)
     for i in range(36):
         print('Feature',i, ':', category_names[i])
@@ -82,9 +121,27 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    '''
+    save_model
+    Save the trained model as Pickle file
+    
+    Input:
+    model The trained model
+    model_file pathpath for the destination of the saved Pickle file
+    '''
     pickle.dump(model, open(model_filepath, 'wb'))
 
 def main():
+    '''
+    main
+    Main function that trains and saves ML model
+    
+    The function applies the following functions:
+    1. Load data from SQLite database
+    2. Train ML model on training set
+    3. Evaluate model performance with test set
+    4. Save trained model as Pickle
+    '''
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
